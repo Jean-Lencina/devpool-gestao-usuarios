@@ -59,7 +59,7 @@ try {
                 break;
         }
     } 
-    // Rota: /users/{id} (buscar um, atualizar ou desativar)
+    // Rota: /users/{id} (buscar um, atualizar, desativar ou excluir definitivamente)
     elseif (count($partes) === 2 && $partes[0] === 'users' && is_numeric($partes[1])) {
         $id = (int) $partes[1];
 
@@ -77,7 +77,11 @@ try {
                 controllerAtualizarUsuario($pdo, $id, $dados);
                 break;
             case 'DELETE':
-                controllerExcluirUsuario($pdo, $id);
+                if (isset($_GET['definitivo']) && $_GET['definitivo'] === 'true') {
+                    controllerExcluirUsuarioDefinitivo($pdo, $id);
+                } else {
+                    controllerExcluirUsuario($pdo, $id);
+                }
                 break;
             default:
                 enviarJson(405, ['erro' => 'Método não permitido.']);

@@ -135,3 +135,11 @@ function excluirUsuario($pdo, $id) {
     $stmt->execute([':id' => $id]);
     return $stmt->rowCount() > 0;
 }
+
+// Exclui o registro do usuário permanentemente do banco
+function excluirUsuarioDefinitivo($pdo, $id) {
+    $sql = "DELETE FROM users WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    return $stmt->rowCount() > 0;
+}

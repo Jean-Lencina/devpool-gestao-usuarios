@@ -53,7 +53,15 @@ function desenharTabela(lista) {
             ? '<span class="status-ativo">Ativo</span>'
             : '<span class="status-inativo">Inativo</span>';
 
-        const botaoAcao = user.active ? `<button class="btn-vermelho" onclick="apagar(${user.id}, '${user.name}')">Excluir</button>` : `<button class="btn-verde" onclick="ativarUsuario(${user.id}, '${user.name}')">Reativar</button>`;
+        const botoesAcao = user.active
+            ? `
+                <button class="btn-amarelo" onclick="abrirEdicao(${user.id})">Editar</button>
+                <button class="btn-vermelho" onclick="apagar(${user.id}, '${user.name}')">Excluir</button>
+              `
+            : `
+                <button class="btn-vermelho" onclick="excluirDefinitivo(${user.id}, '${user.name}')">Excluir Definitivamente</button>
+                <button class="btn-verde" onclick="ativarUsuario(${user.id}, '${user.name}')">Reativar</button>
+              `;
 
         const linha = document.createElement('tr');
         linha.innerHTML = `
@@ -63,8 +71,7 @@ function desenharTabela(lista) {
             <td>${user.login}</td>
             <td>${status}</td>
             <td>
-                <button class="btn-amarelo" onclick="abrirEdicao(${user.id})">Editar</button>
-                ${botaoAcao}
+                ${botoesAcao}
             </td>
         `;
         tabela.appendChild(linha);
@@ -205,7 +212,7 @@ async function abrirEdicao(id) {
     }
 }
 
-// Desativa o usuário
+// Desativa o usuário (exclusão lógica)
 async function apagar(id, nome) {
     if (!confirm(`Deseja realmente desativar "${nome}"?`)) {
         return;
@@ -269,6 +276,32 @@ async function ativarUsuario(id, nome) {
         }
 
         avisar('Usuário reativado!', 'sucesso');
+        carregarLista();
+    } catch (erro) {
+        avisar('Erro ao conectar com o servidor.', 'erro');
+    } finally {
+        mostrarCarregando(false);
+    }
+}
+
+// Exclui um usuário permanentemente
+async function excluirDefinitivo(id, nome) {
+    if (!confirm(`Deseja realmente excluir "${nome}" permanentemente? Esta ação não pode ser desfeita.`)) {
+        return;
+    }
+
+    mostrarCarregando(true);
+
+    try {
+        const resp = await fetch(`${urlApi}/${id}?definitivo=true`, { method: 'DELETE' });
+        const resultado = await resp.json();
+
+        if (!resp.ok) {
+            avisar(resultado.error || 'Erro ao excluir usuário.', 'erro');
+            return;
+        }
+
+        avisar('Usuário excluído permanentemente!', 'sucesso');
         carregarLista();
     } catch (erro) {
         avisar('Erro ao conectar com o servidor.', 'erro');

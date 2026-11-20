@@ -126,3 +126,16 @@ function controllerExcluirUsuario($pdo, $id) {
     excluirUsuario($pdo, $id);
     enviarJson(200, ['message' => 'Usuário desativado com sucesso.']);
 }
+
+// Faz a exclusão definitiva (apaga do banco de dados)
+function controllerExcluirUsuarioDefinitivo($pdo, $id) {
+    $usuarioAtual = buscarUsuarioPorId($pdo, $id);
+
+    if ($usuarioAtual == null) {
+        enviarJson(404, ['error' => 'Usuário não encontrado.']);
+        return;
+    }
+
+    excluirUsuarioDefinitivo($pdo, $id);
+    enviarJson(200, ['message' => 'Usuário excluído permanentemente com sucesso.']);
+}
