@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Usuários</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Gestão de Usuários</h1>
+
+    <div id="mensagem" class="alerta escondido"></div>
+
+    <!-- Formulário de cadastro e edição -->
+    <div class="cartao">
+        <h2 id="titulo-form">Novo Usuário</h2>
+
+        <form id="form-usuario">
+            <input type="hidden" id="id-usuario">
+
+            <div class="linha-form">
+                <div class="campo">
+                    <label for="nome">Nome *</label>
+                    <input type="text" id="nome" placeholder="Mínimo 3 caracteres" required>
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail *</label>
+                    <input type="email" id="email" placeholder="usuario@dominio.com" required>
+                </div>
+            </div>
+
+            <div class="linha-form">
+                <div class="campo">
+                    <label for="login">Login *</label>
+                    <input type="text" id="login" placeholder="Mínimo 3 caracteres" required>
+                </div>
+
+                <div class="campo">
+                    <label for="senha">Senha <small id="dica-senha">(mín. 8 caracteres)</small></label>
+                    <input type="password" id="senha" placeholder="********">
+                </div>
+
+                <div class="campo-check">
+                    <input type="checkbox" id="ativo" checked>
+                    <label for="ativo">Ativo</label>
+                </div>
+            </div>
+
+            <div class="botoes-form">
+                <button type="submit" id="btn-salvar" class="btn-verde">Salvar</button>
+                <button type="button" id="btn-cancelar" class="btn-cinza escondido" onclick="limpar()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lista e pesquisa -->
+    <div class="cartao">
+        <div class="topo-lista">
+            <h2>Usuários Cadastrados</h2>
+            <div class="barra-busca">
+                <input class="escondido" type="number" id="busca-id" placeholder="ID" min="1" style="width: 85px;">
+                <button type="button" class="btn-azul" style="display: none;" onclick="buscarPorId()">Buscar ID</button>
+
+                <input type="text" id="busca" placeholder="Buscar por nome, e-mail ou login...">
+                <button type="button" class="btn-azul" onclick="carregarLista()">Buscar</button>
+                <button type="button" class="btn-cinza" onclick="limparBusca()">Limpar</button>
+            </div>
+        </div>
+
+        <p id="carregando" class="texto-carregando escondido">Carregando...</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Login</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
