@@ -30,7 +30,7 @@ Sistema web para cadastro e gerenciamento de usuários desenvolvido em PHP puro,
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/Jean-Lencina/devpool-gestao-usuarios.git
+git clone [https://github.com/Jean-Lencina/devpool-gestao-usuarios.git](https://github.com/Jean-Lencina/devpool-gestao-usuarios.git)
 cd devpool-gestao-usuarios
 ```
 
